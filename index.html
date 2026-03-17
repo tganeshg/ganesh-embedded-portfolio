@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ganesh Thiru – Embedded Linux & Industrial IoT R&D</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #f5fdf7;
+      --bg-alt: #ffffff;
+      --accent: #16a34a;
+      --accent-soft: rgba(22, 163, 74, 0.08);
+      --text: #022c22;
+      --muted: #6b7280;
+      --card: #ffffff;
+      --border-subtle: #e5efe7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 19px; /* ~120% of previous 16px */
+    }
+    a { color: var(--accent); text-decoration: none; }
+    header, section {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 40px 16px;
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    nav .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    nav .brand {
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    nav .brand span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px; height: 26px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(22, 163, 74, 0.4);
+      font-size: 16px;
+    }
+    nav .links a {
+      margin-left: 18px;
+      font-size: 18px;
+      color: var(--muted);
+    }
+    nav .links a:hover { color: var(--accent); }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: 40px;
+      align-items: center;
+      padding-top: 72px;
+      padding-bottom: 48px;
+    }
+    .hero-title {
+      font-size: clamp(38px, 5vw, 52px);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .hero-title span {
+      color: var(--accent);
+    }
+    .hero-subtitle {
+      color: var(--muted);
+      margin-top: 18px;
+      max-width: 560px;
+      font-size: 20px;
+    }
+    .hero-cta {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    .btn-primary {
+      background: linear-gradient(to right, #22c55e, #22d3ee);
+      color: #020617;
+      padding: 11px 22px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.35);
+    }
+    .btn-primary:hover { transform: translateY(-1px); }
+    .pill {
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: rgba(148, 163, 184, 0.18);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pill-dot {
+      width: 7px; height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 16px rgba(34, 197, 94, 0.9);
+    }
+    .hero-card {
+      background: var(--bg-alt);
+      border-radius: 18px;
+      padding: 20px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+      font-size: 17px;
+    }
+    .hero-card h3 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+    .hero-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0;
+    }
+    .hero-card li::before {
+      content: "▹";
+      color: var(--accent);
+      margin-right: 6px;
+    }
+    .section-title {
+      font-size: 28px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 16px 16px 18px;
+      border: 1px solid var(--border-subtle);
+      font-size: 17px;
+    }
+    .card h3 {
+      margin-top: 0;
+      font-size: 19px;
+      margin-bottom: 6px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .list {
+      padding-left: 18px;
+      margin: 4px 0;
+      font-size: 17px;
+      color: var(--muted);
+    }
+    .list li { margin-bottom: 2px; }
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .process-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 16px;
+    }
+    .step-number {
+      width: 22px; height: 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+    .step-title {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 2px;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .chip {
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #f3faf5;
+      border: 1px solid var(--border-subtle);
+      color: #065f46;
+    }
+    .contact-card {
+      background: var(--bg-alt);
+      border-radius: 18px;
+      padding: 18px 16px 20px;
+      border: 1px solid var(--border-subtle);
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: 20px;
+      align-items: center;
+      font-size: 16px;
+    }
+    form {
+      display: grid;
+      gap: 10px;
+    }
+    label {
+      font-size: 16px;
+      color: var(--muted);
+    }
+    input, textarea {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--text);
+      font-size: 17px;
+      outline: none;
+    }
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.25);
+    }
+    textarea { min-height: 80px; resize: vertical; }
+    footer {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+      font-size: 14px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: 20px;
+    }
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        padding-top: 32px;
+      }
+      .hero-card { order: -1; }
+      .contact-card {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      nav .links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <div class="brand">
+        <span>G</span>
+        <div>Ganesh Thiru – Embedded R&amp;D</div>
+      </div>
+      <div class="links">
+        <a href="#services">Services</a>
+        <a href="#industries">Industries</a>
+        <a href="#process">Process</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <div class="hero">
+      <div>
+        <div class="pill">
+          <span class="pill-dot"></span>
+          Embedded Linux · IIoT · Industrial Automation
+        </div>
+        <h1 class="hero-title">
+          Embedded Linux &amp; Industrial IoT <span>Product R&amp;D</span>
+        </h1>
+        <p class="hero-subtitle">
+          I design and develop Industrial IoT gateways, HMI systems and embedded controllers using Embedded Linux, MQTT, PLC/HMI and IIoT technologies.
+          You manufacture and scale; I handle the R&amp;D.
+        </p>
+        <div class="hero-cta">
+          <a href="#contact"><button class="btn-primary">Discuss Your Product Idea →</button></a>
+          <span style="font-size:12px;color:var(--muted);">
+            12+ years in Embedded Linux, MQTT, PLC, IIoT, OpenWrt &amp; Yocto.
+          </span>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="badge">What I deliver</div>
+        <h3>End-to-end embedded product development</h3>
+        <ul>
+          <li>Industrial hardware design (schematics, PCB, BOM, Gerber)</li>
+          <li>Firmware &amp; Embedded Linux / Yocto / OpenWrt</li>
+          <li>IoT gateways, HMI, protocol converters, energy controllers</li>
+          <li>Prototypes, testing and production handover</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <section id="services">
+    <h2 class="section-title">Embedded Product R&amp;D Services</h2>
+    <p class="section-subtitle">
+      I work with OEMs, panel builders and automation companies who need new products without building a large in-house R&amp;D team.
+    </p>
+    <div class="grid grid-3">
+      <div class="card">
+        <div class="badge">Model 1</div>
+        <h3>Contract R&amp;D</h3>
+        <p>
+          End-to-end development based on your specification. You own the design and intellectual property.
+        </p>
+        <ul class="list">
+          <li>Requirement analysis and architecture</li>
+          <li>Hardware &amp; firmware development</li>
+          <li>Prototype, testing and design transfer</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="badge">Model 2</div>
+        <h3>IP-Based Development &amp; Licensing</h3>
+        <p>
+          I develop and own a core design and you license it (with optional per-unit royalties).
+        </p>
+        <ul class="list">
+          <li>Faster time-to-market</li>
+          <li>Lower upfront engineering cost</li>
+          <li>Possible per-device royalty structures</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="badge">Model 3</div>
+        <h3>Co-development</h3>
+        <p>
+          Shared responsibility: you focus on manufacturing and market, I handle hardware, firmware and system architecture.
+        </p>
+        <ul class="list">
+          <li>Joint planning and roadmap</li>
+          <li>Flexible ownership models</li>
+          <li>Long-term technical partnership</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="industries">
+    <h2 class="section-title">Industrial IoT &amp; Electrical Automation Focus</h2>
+    <p class="section-subtitle">
+      I specialize in harsh industrial environments where reliability, EMC, and long-term support are critical.
+    </p>
+    <div class="two-col">
+      <div>
+        <div class="card">
+          <h3>Industrial IoT &amp; Edge</h3>
+          <ul class="list">
+            <li>Industrial IoT gateways</li>
+            <li>Field data concentrators</li>
+            <li>Edge MQTT / HTTP gateways</li>
+            <li>Remote monitoring &amp; control units</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Energy &amp; Electrical Automation</h3>
+          <ul class="list">
+            <li>Energy monitoring controllers</li>
+            <li>Smart MCC / panel controllers</li>
+            <li>Solar plant monitoring gateways</li>
+            <li>Smart relay and motor controllers</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Industrial Automation &amp; Connectivity</h3>
+          <ul class="list">
+            <li>Remote PLC gateways</li>
+            <li>Modbus / CAN / other protocol converters</li>
+            <li>Edge data loggers with local storage</li>
+            <li>Integration with SCADA and cloud</li>
+          </ul>
+          <div class="chips">
+            <span class="chip">Embedded Linux (Yocto / OpenWrt)</span>
+            <span class="chip">MQTT / IIoT</span>
+            <span class="chip">PLC &amp; HMI</span>
+            <span class="chip">Embedded C</span>
+            <span class="chip">ARM / ESP32</span>
+            <span class="chip">Modbus / Industrial Protocols</span>
+            <span class="chip">Linux Networking</span>
+            <span class="chip">LVGL / Embedded UI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reference">
+    <h2 class="section-title">Reference Product Concepts</h2>
+    <p class="section-subtitle">
+      Example designs that represent the type of solutions I build. These can be customized or used as starting architectures.
+    </p>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>Industrial IoT Gateway</h3>
+        <ul class="list">
+          <li>RS-485 / Modbus RTU, CAN, Ethernet</li>
+          <li>4G / LTE connectivity</li>
+          <li>MQTT to cloud / SCADA</li>
+          <li>Local web UI and data logging</li>
+          <li>OTA firmware-ready architecture</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Energy Monitoring Controller</h3>
+        <ul class="list">
+          <li>Multi-channel energy measurement</li>
+          <li>On-device logging and alarming</li>
+          <li>Integration with EMS / BMS</li>
+          <li>Industrial panel-friendly design</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Industrial HMI + Edge Gateway</h3>
+        <ul class="list">
+          <li>IIoT-enabled HMI on Embedded Linux / OpenWrt</li>
+          <li>Connects PLCs, energy meters and controllers</li>
+          <li>Local visualization plus MQTT edge gateway</li>
+          <li>Ideal for retrofitting existing machines</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <h2 class="section-title">Development Process</h2>
+    <p class="section-subtitle">
+      A clear, structured process from idea to production-ready design.
+    </p>
+    <div class="two-col">
+      <div class="card">
+        <div class="process-step">
+          <div class="step-number">1</div>
+          <div>
+            <div class="step-title">Requirement Study &amp; Feasibility</div>
+            <div>Clarify technical and business requirements, standards, and constraints.</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">2</div>
+          <div>
+            <div class="step-title">System &amp; Architecture Design</div>
+            <div>Choose MCU/Soc, interfaces, power, protection and software architecture.</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">3</div>
+          <div>
+            <div class="step-title">Hardware Design</div>
+            <div>Schematics, PCB layout, BOM, EMC/industrial design considerations.</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">4</div>
+          <div>
+            <div class="step-title">Firmware &amp; Software</div>
+            <div>RTOS/bare-metal or Embedded Linux, bootloaders, protocols, diagnostics.</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="process-step">
+          <div class="step-number">5</div>
+          <div>
+            <div class="step-title">Prototype &amp; Testing</div>
+            <div>Bring-up, functional verification, field testing, iterations.</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">6</div>
+          <div>
+            <div class="step-title">Certification Support</div>
+            <div>Assist with design aspects for CE/UL/other regulatory needs where required.</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">7</div>
+          <div>
+            <div class="step-title">Production Handover</div>
+            <div>Provide schematics, PCB, BOM, Gerber, firmware, test procedures and documentation.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2 class="section-title">About Me</h2>
+    <p class="section-subtitle">
+      12+ years of hands-on experience in embedded hardware and firmware for industrial products.
+    </p>
+    <div class="two-col">
+      <div class="card">
+        <h3>Profile</h3>
+        <p>
+          I am an Embedded Systems engineer with 12+ years of experience in industrial automation and IIoT, currently working as Module Lead at Horner Automation in Bengaluru.
+        </p>
+        <p>
+          My expertise spans Embedded Linux (Yocto, OpenWrt), MQTT, PLC/HMI systems, industrial gateways and embedded C firmware. I’ve worked on products like industrial controllers, data concentrators and IIoT-enabled HMI and edge gateways.
+        </p>
+        <p>
+          I help OEMs and automation companies who need strong embedded R&amp;D without building a large internal team. From architecture and hardware design to firmware, Linux build systems and field integration, I can take your industrial product idea from concept to a production-ready design.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Skills &amp; Technologies</h3>
+        <div class="chips">
+          <span class="chip">Embedded Linux (Yocto / OpenWrt)</span>
+          <span class="chip">MQTT / IIoT</span>
+          <span class="chip">PLC &amp; HMI</span>
+          <span class="chip">Embedded C</span>
+          <span class="chip">ARM / ESP32</span>
+          <span class="chip">Modbus / Industrial Protocols</span>
+          <span class="chip">Linux Networking</span>
+          <span class="chip">LVGL / Embedded UI</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2 class="section-title">Let’s Discuss Your Product Idea</h2>
+    <p class="section-subtitle">
+      Share a brief description of your requirement and I’ll get back to you to discuss scope, timelines and engagement model.
+    </p>
+    <div class="contact-card">
+      <div>
+        <h3>Contact Details</h3>
+        <p style="color:var(--muted);margin-bottom:8px;">
+          Email: <a href="mailto:tganeshg89@gmail.com">tganeshg89@gmail.com</a>
+        </p>
+        <p style="color:var(--muted);margin-bottom:0;">
+          Please include:
+        </p>
+        <ul class="list">
+          <li>Company name and location</li>
+          <li>Short description of the product idea</li>
+          <li>Target industry and expected volumes</li>
+        </ul>
+      </div>
+      <div>
+        <!-- This form is static. To make it work, connect to a backend or form service. -->
+        <form>
+          <div>
+            <label for="name">Name</label>
+            <input id="name" type="text" placeholder="Your name" />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="your@email.com" />
+          </div>
+          <div>
+            <label for="company">Company</label>
+            <input id="company" type="text" placeholder="Company name" />
+          </div>
+          <div>
+            <label for="message">Brief requirement</label>
+            <textarea id="message" placeholder="Describe the product or idea you want to develop..."></textarea>
+          </div>
+          <button type="button" class="btn-primary">Send (configure backend)</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>© <span id="year"></span> Ganesh Thiru – Embedded Product R&amp;D</div>
+    <div>Industrial IoT · Electrical Automation · Embedded Linux</div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
