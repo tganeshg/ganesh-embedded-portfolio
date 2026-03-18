@@ -274,6 +274,17 @@
       box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.25);
     }
     textarea { min-height: 80px; resize: vertical; }
+    .poc-card h3 { margin-bottom: 8px; }
+    .poc-card p { color: var(--muted); margin: 0 0 14px; }
+    .poc-card .poc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 16px;
+      margin-top: 4px;
+    }
+    .poc-card .poc-link:hover { text-decoration: underline; }
     footer {
       max-width: 1280px;
       margin: 0 auto;
@@ -311,6 +322,7 @@
         <a href="#industries">Industries</a>
         <a href="#process">Process</a>
         <a href="#about">About</a>
+        <a href="#poc">POC Projects</a>
         <a href="#contact">Contact</a>
       </div>
     </div>
@@ -478,6 +490,39 @@
           <li>Local visualization plus MQTT edge gateway</li>
           <li>Ideal for retrofitting existing machines</li>
         </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="poc">
+    <h2 class="section-title">POC Projects on GitHub</h2>
+    <p class="section-subtitle">
+      Open-source proof-of-concept work: Modbus, embedded UI on OpenWrt, and a full web dashboard stack.
+    </p>
+    <div class="grid grid-3">
+      <div class="card poc-card">
+        <div class="badge">Industrial · C</div>
+        <h3>MODBUS-MRM-Generic</h3>
+        <p>
+          Configurable Modbus master (MRM) source in C—read/write registers across slaves using JSON-based configuration. Useful for gateways, data concentrators, and IIoT edge polling.
+        </p>
+        <a class="poc-link" href="https://github.com/tganeshg/MODBUS-MRM-Generic" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
+      </div>
+      <div class="card poc-card">
+        <div class="badge">Web · Dashboard</div>
+        <h3>advonitor</h3>
+        <p>
+          Source for the Advonitor site: dashboard-style UI with HTML, CSS/SCSS, JavaScript, and API hooks—example of a monitoring-oriented web front end.
+        </p>
+        <a class="poc-link" href="https://github.com/tganeshg/advonitor" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
+      </div>
+      <div class="card poc-card">
+        <div class="badge">OpenWrt · LVGL</div>
+        <h3>OpenWrt_LVGL_Experiments</h3>
+        <p>
+          LVGL on OpenWrt (e.g. Raspberry Pi): cross-compile LVGL, integrate with OpenWrt toolchain, and build embedded HMI-style UIs for IIoT edge devices.
+        </p>
+        <a class="poc-link" href="https://github.com/tganeshg/OpenWrt_LVGL_Experiments" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
       </div>
     </div>
   </section>
