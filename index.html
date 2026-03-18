@@ -599,25 +599,28 @@
         </ul>
       </div>
       <div>
-        <!-- This form is static. To make it work, connect to a backend or form service. -->
-        <form>
+        <form id="contactForm">
+          <input type="hidden" name="_subject" value="New Product R&D Enquiry from Website" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
           <div>
-            <label for="name">Name</label>
-            <input id="name" type="text" placeholder="Your name" />
+            <label for="name">Name <span style="color:#dc2626;">*</span></label>
+            <input id="name" name="name" type="text" placeholder="Your name" required />
           </div>
           <div>
-            <label for="email">Email</label>
-            <input id="email" type="email" placeholder="your@email.com" />
+            <label for="email">Email <span style="color:#dc2626;">*</span></label>
+            <input id="email" name="email" type="email" placeholder="your@email.com" required />
           </div>
           <div>
             <label for="company">Company</label>
-            <input id="company" type="text" placeholder="Company name" />
+            <input id="company" name="company" type="text" placeholder="Company name" />
           </div>
           <div>
-            <label for="message">Brief requirement</label>
-            <textarea id="message" placeholder="Describe the product or idea you want to develop..."></textarea>
+            <label for="message">Brief requirement <span style="color:#dc2626;">*</span></label>
+            <textarea id="message" name="message" placeholder="Describe the product or idea you want to develop..." required></textarea>
           </div>
-          <button type="button" class="btn-primary">Send (configure backend)</button>
+          <button type="submit" class="btn-primary" id="sendBtn">Send Requirement →</button>
+          <p id="formStatus" style="margin:6px 0 0;font-size:14px;display:none;"></p>
         </form>
       </div>
     </div>
@@ -630,6 +633,47 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var form = e.target;
+      var btn = document.getElementById('sendBtn');
+      var status = document.getElementById('formStatus');
+      var formData = new FormData(form);
+
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      status.style.display = 'none';
+
+      fetch('https://formsubmit.co/ajax/858c01ffb311a9297606c6fea4063a63', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData
+      })
+      .then(function(response) { return response.json(); })
+      .then(function(data) {
+        if (data.success === 'true' || data.success === true) {
+          status.style.display = 'block';
+          status.style.color = 'var(--accent)';
+          status.textContent = 'Thank you! Your requirement has been sent successfully.';
+          form.reset();
+        } else {
+          status.style.display = 'block';
+          status.style.color = '#dc2626';
+          status.textContent = 'Something went wrong. Please email tganeshg89@gmail.com directly.';
+        }
+        btn.disabled = false;
+        btn.textContent = 'Send Requirement →';
+      })
+      .catch(function() {
+        status.style.display = 'block';
+        status.style.color = '#dc2626';
+        status.textContent = 'Network error. Please email tganeshg89@gmail.com directly.';
+        btn.disabled = false;
+        btn.textContent = 'Send Requirement →';
+      });
+    });
   </script>
 </body>
 </html>
